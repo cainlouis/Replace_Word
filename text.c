@@ -1,13 +1,14 @@
 #include "text.h"
 #include <stdio.h>
-
+#include <stdlib.h>
+#include <string.h>
 
 #define BUFFER_SIZE 1000
 
 /**
  * Returns total occurrences of a word in given file.
  */
-int countOccurrences(FILE *fptr, const char *word)
+int findOccurrences(FILE *fptr, char *word)
 {
     char str[BUFFER_SIZE];
     char *pos;
@@ -15,7 +16,7 @@ int countOccurrences(FILE *fptr, const char *word)
     int index, count;
     
     count = 0;
-
+    // printf("%s\n", count);
     // Read line from file till end of file.
     while ((fgets(str, BUFFER_SIZE, fptr)) != NULL)
     {
@@ -28,10 +29,9 @@ int countOccurrences(FILE *fptr, const char *word)
             // Memory address of pos - memory
             // address of str.
             index = (pos - str) + 1;
-
             count++;
+            printf("%s\n", count);
         }
     }
-
     return count;
 }

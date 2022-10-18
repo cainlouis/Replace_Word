@@ -1,4 +1,5 @@
 #include "traversal.h" 
+#include "text.h"
 #include <stdio.h>
 #include <dirent.h>
 #include <string.h>
@@ -20,7 +21,12 @@ int traversal(char *word, char *dirname) {
             strcat(path, "/");
             strcat(path, de->d_name);
         if (len > 4 && strcmp(de->d_name + len - 4, ".txt") == 0){
-            printf("%s\n", path);
+            FILE *ftr;
+            int count;
+            count = 0;
+            ftr = fopen(path, "r");
+            count = findOccurrences(ftr, word);
+            // printf("%s  in %s\n", count, path);
         }
         if (de->d_type == DT_DIR && strcmp(de->d_name, ".") != 0 && strcmp(de->d_name, "..") != 0) {
             traversal(word, path);
