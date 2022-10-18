@@ -3,4 +3,6 @@
 
 int traversal(char *word, char *dirname);
 
+char* getRelativePath(char *dname, char *fname);
+
 #endif
