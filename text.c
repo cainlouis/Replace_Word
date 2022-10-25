@@ -8,30 +8,34 @@
 /**
  * Returns total occurrences of a word in given file.
  */
-int findOccurrences(FILE *fptr, char *word)
+int findOccurrences(FILE *rfile, char *word)
 {
     char str[BUFFER_SIZE];
     char *pos;
 
-    int index, count;
-    
-    count = 0;
+    int wordlength, occu, count, strlength, i, j, temp;
+    wordlength = strlen(word);
+    occu = 0;
     // printf("%s\n", count);
     // Read line from file till end of file.
-    while ((fgets(str, BUFFER_SIZE, fptr)) != NULL)
+    while ((fgets(str, BUFFER_SIZE, rfile)) != NULL)
     {
-        index = 0;
-
-        // Find next occurrence of word in str
-        while ((pos = strstr(str + index, word)) != NULL)
-        {
-            // Index of word in str is
-            // Memory address of pos - memory
-            // address of str.
-            index = (pos - str) + 1;
-            count++;
-            printf("%s\n", count);
+        strlength = strlen(str);
+        printf("%s\n", str);
+        for (i = 0; i < strlength; i++) {
+            temp = i;
+            for (j = 0; j < wordlength; j++) {
+                if (str[i] == word[j]) {
+                    i++;
+                }
+            }
+            count = i - temp;
+            if (count == wordlength) {
+                occu++;
+            }
+            i = temp;
         }
     }
-    return count;
+    printf("%s\n", occu);
+    return occu;
 }
