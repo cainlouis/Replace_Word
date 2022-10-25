@@ -26,7 +26,7 @@ int traversal(char *word, char *dirname) {
             count = 0;
             ftr = fopen(path, "r");
             count = findOccurrences(ftr, word);
-            // printf("%s  in %s\n", count, path);
+            // printf("%d  in %s\n", count, path);
         }
         if (de->d_type == DT_DIR && strcmp(de->d_name, ".") != 0 && strcmp(de->d_name, "..") != 0) {
             traversal(word, path);
