@@ -77,15 +77,11 @@ void replaceWord(char *str, char *word) {
     char *newWord;
     int wordlength = strlen(word);
 
-    newWord = word;
+    strcpy(newWord, word);
     for (int i = 0; i < wordlength; i++) {
         newWord[i] = toupper(newWord[i]);
     }
-
-    if (!strcmp(word, newWord)) {
-        return;
-    }
-
+    printf(word);
     while ((pos = strstr(str, word)) != NULL)
     {
         // Backup current line
@@ -103,6 +99,5 @@ void replaceWord(char *str, char *word) {
         // Concatenate str with remaining words after 
         // oldword found index.
         strcat(str, temp + index + wordlength);
-        printf(strcat(str, newWord));
     }
 }
