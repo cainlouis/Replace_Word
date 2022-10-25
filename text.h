@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 
-int findOccurrences(FILE *fptr, char *word);
+int findOccurrences(char *path, char *word);
+
+char * replaceWord(char *str, char *word, int *pos);
 
 #endif

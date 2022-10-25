@@ -21,11 +21,9 @@ int traversal(char *word, char *dirname) {
             strcat(path, "/");
             strcat(path, de->d_name);
         if (len > 4 && strcmp(de->d_name + len - 4, ".txt") == 0){
-            FILE *ftr;
             int count;
             count = 0;
-            ftr = fopen(path, "r");
-            count = findOccurrences(ftr, word);
+            count = findOccurrences(path, word);
             // printf("%d  in %s\n", count, path);
         }
         if (de->d_type == DT_DIR && strcmp(de->d_name, ".") != 0 && strcmp(de->d_name, "..") != 0) {

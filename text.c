@@ -9,15 +9,30 @@
 /**
  * Returns total occurrences of a word in given file.
  */
-int findOccurrences(FILE *rfile, char *word)
+int findOccurrences(char *path, char *word)
 {
-    char str[BUFFER_SIZE];
-    
+    FILE *tempf;
+    FILE *ftr;
+    char str[BUFFER_SIZE], *newstr;
     int wordlength, occu, count, strlength, i, j, temp;
+    printf("%s\n", path);
+
+    //Open necessary files
+    ftr = fopen(path, "r");
+    tempf = fopen("replace.txt", "w");
+
+    //Check if fopen is able to open file
+    if (ftr == NULL || tempf == NULL) {
+        //If unable to open then exit
+        printf("Unable to open file.\n");
+        printf("Make sure you have read/write privileges\n");
+        exit(EXIT_SUCCESS);
+    }
+
     wordlength = strlen(word);
     occu = 0;
     // Read line from file till end of file.
-    while ((fgets(str, BUFFER_SIZE, rfile)) != NULL)
+    while ((fgets(str, BUFFER_SIZE, ftr)) != NULL)
     {
         //Get the length of the string for the for loop
         strlength = strlen(str);
@@ -39,15 +54,44 @@ int findOccurrences(FILE *rfile, char *word)
             if (count == wordlength) {
                 // Add 1 to the occurence variable
                 occu++;
+                newstr = replaceWord(str, word, temp);
             }
             // Now give the current position back to our i
             i = temp;
         }
+        fputs(newstr, tempf);
     }
+
+    fclose(ftr);
+    fclose(tempf);
+
+    remove(path);
+
+    rename("replace.txt", path);
     printf("%d\n", occu);
     return occu;
 }
 
-void replaceWord() {
+char * replaceWord(char *str, char *word, int *pos) {
+    char temp[BUFFER_SIZE];
+    char *newWord;
+    int *wordlength = strlen(word); 
+    int index = 0;
+
+    newWord = word;
+    for (int i = 0; i < wordlength; i++) {
+        newWord[i] = toupper(newWord[i]);
+    }
     
+    strcpy(temp, str);
+
+    index = pos + wordlength;
+
+    str[index] = '\0';
+
+    strcat(str, newWord);
+    printf("%s\n", str);
+    strcat(str, temp + index + wordlength); 
+
+    return str;
 }
