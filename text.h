@@ -5,6 +5,6 @@
 
 int findOccurrences(char *path, char *word);
 
-char * replaceWord(char *str, char *word, int *pos);
+void replaceWord(char *str, char *word);
 
 #endif

@@ -1,6 +1,1 @@
-Banana
-Cherry 
-Apple
-Lemon
-Strawberry
-Apple
+Banana, Cherry, apple, Lemon, Strawberry, apple

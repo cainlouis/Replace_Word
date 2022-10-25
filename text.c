@@ -13,13 +13,13 @@ int findOccurrences(char *path, char *word)
 {
     FILE *tempf;
     FILE *ftr;
-    char str[BUFFER_SIZE], *newstr;
+    char str[BUFFER_SIZE];
     int wordlength, occu, count, strlength, i, j, temp;
     printf("%s\n", path);
 
     //Open necessary files
     ftr = fopen(path, "r");
-    tempf = fopen("replace.txt", "w");
+    tempf = fopen("replace.tmp", "w");
 
     //Check if fopen is able to open file
     if (ftr == NULL || tempf == NULL) {
@@ -54,12 +54,12 @@ int findOccurrences(char *path, char *word)
             if (count == wordlength) {
                 // Add 1 to the occurence variable
                 occu++;
-                newstr = replaceWord(str, word, temp);
             }
             // Now give the current position back to our i
             i = temp;
         }
-        fputs(newstr, tempf);
+        replaceWord(str, word);
+        fputs(str, tempf);
     }
 
     fclose(ftr);
@@ -67,31 +67,42 @@ int findOccurrences(char *path, char *word)
 
     remove(path);
 
-    rename("replace.txt", path);
-    printf("%d\n", occu);
+    rename("replace.tmp", path);
     return occu;
 }
 
-char * replaceWord(char *str, char *word, int *pos) {
-    char temp[BUFFER_SIZE];
-    char *newWord;
-    int *wordlength = strlen(word); 
+void replaceWord(char *str, char *word) {
+    char *pos, temp[BUFFER_SIZE];
     int index = 0;
+    char *newWord;
+    int wordlength = strlen(word);
 
     newWord = word;
     for (int i = 0; i < wordlength; i++) {
         newWord[i] = toupper(newWord[i]);
     }
-    
-    strcpy(temp, str);
 
-    index = pos + wordlength;
+    if (!strcmp(word, newWord)) {
+        return;
+    }
 
-    str[index] = '\0';
+    while ((pos = strstr(str, word)) != NULL)
+    {
+        // Backup current line
+        strcpy(temp, str);
 
-    strcat(str, newWord);
-    printf("%s\n", str);
-    strcat(str, temp + index + wordlength); 
+        // Index of current found word
+        index = pos - str;
 
-    return str;
+        // Terminate str after word found index
+        str[index] = '\0';
+
+        // Concatenate str with new word 
+        strcat(str, newWord);
+        
+        // Concatenate str with remaining words after 
+        // oldword found index.
+        strcat(str, temp + index + wordlength);
+        printf(strcat(str, newWord));
+    }
 }
