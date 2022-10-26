@@ -11,6 +11,7 @@ Go through the current directory and find the number of occurences of the word i
 int traversal(char *word, char *dirname) {
     struct dirent *de;
     DIR *dir = opendir(dirname);
+    static int index = 0;
     //Check if the directory could be opened, if not print message and exit
     if (dir == NULL) {
         printf("Could not open current directory. Make sure you have read/write privileges\n");
@@ -28,11 +29,16 @@ int traversal(char *word, char *dirname) {
             strcat(path, name);
         //if it is as txt file
         if (len > 4 && strcmp(name + len - 4, ".txt") == 0){
+            char *fname;
             int count;
+            fname = path;
             count = 0;
             //find the number of occurence of the word in file
             count = findOccurrences(path, word);
             printf("%d  in %s\n", count, path);
+            struct Traversal p1 = {.changes = count, .fpath = fname};
+            printf("%s\n", p1.fpath);
+            index++;
         }
         //if it is a directory and is current or parent directory
         if (de->d_type == DT_DIR && strcmp(name, ".") != 0 && strcmp(name, "..") != 0) {
@@ -42,5 +48,15 @@ int traversal(char *word, char *dirname) {
     }
     //Free memory by directory
     closedir(dir);    
-    return 0;
+    return index;
+}
+
+// struct Traversal *getArray(char *word, char *dirname)
+// {
+//     /* data */
+// };
+
+void getIndex(char *word, char *dirname) {
+    int index = traversal(word, dirname);
+    printf("%d\n", index);
 }

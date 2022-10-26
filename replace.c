@@ -7,7 +7,7 @@ int main(int argc, char *argv[]) {
     }
     else {
         // char word = argv[0];
-        traversal(argv[1], ".");
+        getIndex(argv[1], ".");
     }
     return 0;
 }
