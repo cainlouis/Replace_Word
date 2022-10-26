@@ -15,10 +15,11 @@ int findOccurrences(char *path, char *word)
     FILE *ftr;
     char str[BUFFER_SIZE];
     int wordlength, occu, count, strlength, i, j, temp;
+    printf("%s\n", path);
 
     //Open necessary files
     ftr = fopen(path, "r");
-    tempf = fopen("replace.txt", "w");
+    tempf = fopen("replace.tmp", "w");
 
     //Check if fopen is able to open file
     if (ftr == NULL || tempf == NULL) {
@@ -57,42 +58,36 @@ int findOccurrences(char *path, char *word)
             // Now give the current position back to our i
             i = temp;
         }
-        //Replace the word and put the line in a temp file
         replaceWord(str, word);
         fputs(str, tempf);
     }
 
-    //Free memory by closing the files
     fclose(ftr);
     fclose(tempf);
 
-    //Delete the original file
     remove(path);
-    //Rename the temp file with the original name
-    rename("replace.txt", path);
+
+    rename("replace.tmp", path);
     return occu;
 }
 
-//Replace the word in the file
 void replaceWord(char *str, char *word) {
     char *pos, temp[BUFFER_SIZE];
     int index = 0;
-    char *newWord = { 0 };
+    char *newWord;
     int wordlength = strlen(word);
 
-    //Copy the word so we do not change the user input
     strcpy(newWord, word);
-    //Change the word for its uppercase form
     for (int i = 0; i < wordlength; i++) {
         newWord[i] = toupper(newWord[i]);
     }
-
+    printf(word);
     while ((pos = strstr(str, word)) != NULL)
     {
         // Backup current line
         strcpy(temp, str);
 
-        //Index of current found word
+        // Index of current found word
         index = pos - str;
 
         // Terminate str after word found index
@@ -101,7 +96,8 @@ void replaceWord(char *str, char *word) {
         // Concatenate str with new word 
         strcat(str, newWord);
         
-        // Concatenate str with remaining words
+        // Concatenate str with remaining words after 
+        // oldword found index.
         strcat(str, temp + index + wordlength);
     }
 }
