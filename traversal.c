@@ -8,7 +8,7 @@
 /* 
 Go through the current directory and find the number of occurences of the word in txt file
 */
-int traversal(char *word, char *dirname) {
+int traversal(char *word, char *dirname, struct Traversal *items) {
     struct dirent *de;
     DIR *dir = opendir(dirname);
     static int index = 0;
@@ -35,15 +35,18 @@ int traversal(char *word, char *dirname) {
             count = 0;
             //find the number of occurence of the word in file
             count = findOccurrences(path, word);
-            printf("%d  in %s\n", count, path);
-            struct Traversal p1 = {.changes = count, .fpath = fname};
-            printf("%s\n", p1.fpath);
+            // printf("%d  in %s\n", count, path);
+            struct Traversal item = {.changes = count, .fpath = fname};
+            // changes = count;
+            // strcpy(item.fpath, fname);item.
+            items[index] = item;
+            printf("%s\n", items[index].fpath);
             index++;
         }
         //if it is a directory and is current or parent directory
         if (de->d_type == DT_DIR && strcmp(name, ".") != 0 && strcmp(name, "..") != 0) {
             //use recursive to go through directory and findd file
-            traversal(word, path);
+            traversal(word, path, items);
         }
     }
     //Free memory by directory
@@ -51,12 +54,19 @@ int traversal(char *word, char *dirname) {
     return index;
 }
 
-// struct Traversal *getArray(char *word, char *dirname)
-// {
-//     /* data */
-// };
+struct Traversal *getArray(char *word, char *dirname)
+{
+    int n;
+    struct Traversal *items = malloc(sizeof(struct Traversal) *ARRAY_SIZE);
+    int index = traversal(word, dirname, items);
+    for (n=0; n< ARRAY_SIZE; n++) {
+        printf("%d in %s\n", items[n].changes, items[n].fpath);
+    }
+    return items;
+    
+};
 
-void getIndex(char *word, char *dirname) {
-    int index = traversal(word, dirname);
-    printf("%d\n", index);
-}
+// void getIndex(char *word, char *dirname) {
+//     int index = traversal(word, dirname);
+//     printf("%d\n", index);
+// }
