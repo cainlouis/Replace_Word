@@ -1,12 +1,8 @@
 #ifndef REPORT_DOT_H
 #define REPORT_DOT_H
 
-struct Traversal
-{
-    int changes;
-    char* fpath[100];
-};
+int compare(const void * a, const void * b);
 
-int compare();
+int report(char *word, char *dirname);
 
 #endif

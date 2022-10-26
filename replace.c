@@ -1,4 +1,4 @@
-#include "traversal.h"
+#include "report.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -7,8 +7,7 @@ int main(int argc, char *argv[]) {
         printf("No word to modify has been entered. Please enter a word to replace.");
     }
     else {
-        // char word = argv[0];
-        getArray(argv[1], ".");
+        report(argv[1], ".");
     }
     return 0;
 }

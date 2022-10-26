@@ -6,12 +6,10 @@
 struct Traversal
 {
     int changes;
-    char* fpath[100];
+    char *fpath[100];
 };
 
 int traversal(char *word, char *dirname, struct Traversal *items);
-
-void getIndex(char *word, char *dirname);
 
 struct Traversal *getArray(char *word, char *dirname);
 
