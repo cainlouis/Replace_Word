@@ -1,5 +1,6 @@
 #include "traversal.h" 
 #include "text.h"
+#include "report.h"
 #include <stdio.h>
 #include <dirent.h>
 #include <string.h>
@@ -36,11 +37,11 @@ int traversal(char *word, char *dirname, struct Traversal *items) {
             //find the number of occurence of the word in file
             count = findOccurrences(path, word);
             // printf("%d  in %s\n", count, path);
-            struct Traversal item = {.changes = count, .fpath = fname};
-            // changes = count;
-            // strcpy(item.fpath, fname);item.
+            struct Traversal item;
+            item.changes = count;
+            strcpy(item.fpath, fname);
             items[index] = item;
-            printf("%s\n", items[index].fpath);
+            // printf("%s\n", items[index].fpath);
             index++;
         }
         //if it is a directory and is current or parent directory
@@ -56,14 +57,14 @@ int traversal(char *word, char *dirname, struct Traversal *items) {
 
 struct Traversal *getArray(char *word, char *dirname)
 {
-    int n;
+    int n = 0;
     struct Traversal *items = malloc(sizeof(struct Traversal) *ARRAY_SIZE);
     int index = traversal(word, dirname, items);
-    for (n=0; n< ARRAY_SIZE; n++) {
+    while (n < index) {
         printf("%d in %s\n", items[n].changes, items[n].fpath);
+        n++;
     }
     return items;
-    
 };
 
 // void getIndex(char *word, char *dirname) {

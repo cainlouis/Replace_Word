@@ -6,7 +6,7 @@
 struct Traversal
 {
     int changes;
-    char *fpath;
+    char* fpath[100];
 };
 
 int traversal(char *word, char *dirname, struct Traversal *items);
