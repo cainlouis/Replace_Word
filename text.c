@@ -15,12 +15,11 @@ int findOccurrences(char *path, char *word)
     FILE *ftr;
     char str[BUFFER_SIZE];
     int wordlength, occu, count, strlength, i, j, temp;
-    printf("%s\n", path);
 
     //Open necessary files
     ftr = fopen(path, "r");
-    tempf = fopen("replace.tmp", "w");
-
+    tempf = fopen("replace.txt", "w");
+    // 
     //Check if fopen is able to open file
     if (ftr == NULL || tempf == NULL) {
         //If unable to open then exit
@@ -58,46 +57,52 @@ int findOccurrences(char *path, char *word)
             // Now give the current position back to our i
             i = temp;
         }
+        //Replace the word for its uppercase form and put new line in temp file
         replaceWord(str, word);
         fputs(str, tempf);
     }
 
+    //Free memory by closing files
     fclose(ftr);
     fclose(tempf);
-
+    //Delete original
     remove(path);
-
-    rename("replace.tmp", path);
+    //rename temp file as the original
+    rename("replace.txt", path);
     return occu;
 }
 
+/*
+Replace line for new line with the word in uppercase
+*/
 void replaceWord(char *str, char *word) {
     char *pos, temp[BUFFER_SIZE];
     int index = 0;
-    char *newWord;
     int wordlength = strlen(word);
-
+    char *newWord;
+    //Copy the word to not change original
     strcpy(newWord, word);
+    //Make it uppercase
     for (int i = 0; i < wordlength; i++) {
         newWord[i] = toupper(newWord[i]);
     }
-    printf(word);
+    
+    //As long as there is an instance of the word
     while ((pos = strstr(str, word)) != NULL)
     {
-        // Backup current line
+        //Copy current line as to not modify the original
         strcpy(temp, str);
 
-        // Index of current found word
+        //Index of current found occurence
         index = pos - str;
 
-        // Terminate str after word found index
+        //End str after word found index
         str[index] = '\0';
 
-        // Concatenate str with new word 
+        //Concatenate str with new word 
         strcat(str, newWord);
         
         // Concatenate str with remaining words after 
-        // oldword found index.
         strcat(str, temp + index + wordlength);
     }
 }
